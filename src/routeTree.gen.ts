@@ -9,38 +9,232 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedOperatsiyalarRouteImport } from './routes/_authenticated/operatsiyalar'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedNastroykaIndexRouteImport } from './routes/_authenticated/nastroyka/index'
+import { Route as AuthenticatedNastroykaUnitTypesRouteImport } from './routes/_authenticated/nastroyka/unit-types'
+import { Route as AuthenticatedNastroykaSourcesRouteImport } from './routes/_authenticated/nastroyka/sources'
+import { Route as AuthenticatedNastroykaProductsRouteImport } from './routes/_authenticated/nastroyka/products'
+import { Route as AuthenticatedNastroykaExchangeRatesRouteImport } from './routes/_authenticated/nastroyka/exchange-rates'
+import { Route as AuthenticatedNastroykaEmployeesRouteImport } from './routes/_authenticated/nastroyka/employees'
+import { Route as AuthenticatedNastroykaDealersRouteImport } from './routes/_authenticated/nastroyka/dealers'
+import { Route as AuthenticatedNastroykaContragentsRouteImport } from './routes/_authenticated/nastroyka/contragents'
+import { Route as AuthenticatedNastroykaChargeTypesRouteImport } from './routes/_authenticated/nastroyka/charge-types'
+import { Route as AuthenticatedNastroykaAccountsRouteImport } from './routes/_authenticated/nastroyka/accounts'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedOperatsiyalarRoute =
+  AuthenticatedOperatsiyalarRouteImport.update({
+    id: '/operatsiyalar',
+    path: '/operatsiyalar',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedNastroykaIndexRoute =
+  AuthenticatedNastroykaIndexRouteImport.update({
+    id: '/nastroyka/',
+    path: '/nastroyka/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNastroykaUnitTypesRoute =
+  AuthenticatedNastroykaUnitTypesRouteImport.update({
+    id: '/nastroyka/unit-types',
+    path: '/nastroyka/unit-types',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNastroykaSourcesRoute =
+  AuthenticatedNastroykaSourcesRouteImport.update({
+    id: '/nastroyka/sources',
+    path: '/nastroyka/sources',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNastroykaProductsRoute =
+  AuthenticatedNastroykaProductsRouteImport.update({
+    id: '/nastroyka/products',
+    path: '/nastroyka/products',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNastroykaExchangeRatesRoute =
+  AuthenticatedNastroykaExchangeRatesRouteImport.update({
+    id: '/nastroyka/exchange-rates',
+    path: '/nastroyka/exchange-rates',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNastroykaEmployeesRoute =
+  AuthenticatedNastroykaEmployeesRouteImport.update({
+    id: '/nastroyka/employees',
+    path: '/nastroyka/employees',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNastroykaDealersRoute =
+  AuthenticatedNastroykaDealersRouteImport.update({
+    id: '/nastroyka/dealers',
+    path: '/nastroyka/dealers',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNastroykaContragentsRoute =
+  AuthenticatedNastroykaContragentsRouteImport.update({
+    id: '/nastroyka/contragents',
+    path: '/nastroyka/contragents',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNastroykaChargeTypesRoute =
+  AuthenticatedNastroykaChargeTypesRouteImport.update({
+    id: '/nastroyka/charge-types',
+    path: '/nastroyka/charge-types',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNastroykaAccountsRoute =
+  AuthenticatedNastroykaAccountsRouteImport.update({
+    id: '/nastroyka/accounts',
+    path: '/nastroyka/accounts',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/operatsiyalar': typeof AuthenticatedOperatsiyalarRoute
+  '/nastroyka/accounts': typeof AuthenticatedNastroykaAccountsRoute
+  '/nastroyka/charge-types': typeof AuthenticatedNastroykaChargeTypesRoute
+  '/nastroyka/contragents': typeof AuthenticatedNastroykaContragentsRoute
+  '/nastroyka/dealers': typeof AuthenticatedNastroykaDealersRoute
+  '/nastroyka/employees': typeof AuthenticatedNastroykaEmployeesRoute
+  '/nastroyka/exchange-rates': typeof AuthenticatedNastroykaExchangeRatesRoute
+  '/nastroyka/products': typeof AuthenticatedNastroykaProductsRoute
+  '/nastroyka/sources': typeof AuthenticatedNastroykaSourcesRoute
+  '/nastroyka/unit-types': typeof AuthenticatedNastroykaUnitTypesRoute
+  '/nastroyka/': typeof AuthenticatedNastroykaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/operatsiyalar': typeof AuthenticatedOperatsiyalarRoute
+  '/nastroyka/accounts': typeof AuthenticatedNastroykaAccountsRoute
+  '/nastroyka/charge-types': typeof AuthenticatedNastroykaChargeTypesRoute
+  '/nastroyka/contragents': typeof AuthenticatedNastroykaContragentsRoute
+  '/nastroyka/dealers': typeof AuthenticatedNastroykaDealersRoute
+  '/nastroyka/employees': typeof AuthenticatedNastroykaEmployeesRoute
+  '/nastroyka/exchange-rates': typeof AuthenticatedNastroykaExchangeRatesRoute
+  '/nastroyka/products': typeof AuthenticatedNastroykaProductsRoute
+  '/nastroyka/sources': typeof AuthenticatedNastroykaSourcesRoute
+  '/nastroyka/unit-types': typeof AuthenticatedNastroykaUnitTypesRoute
+  '/nastroyka': typeof AuthenticatedNastroykaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/operatsiyalar': typeof AuthenticatedOperatsiyalarRoute
+  '/_authenticated/nastroyka/accounts': typeof AuthenticatedNastroykaAccountsRoute
+  '/_authenticated/nastroyka/charge-types': typeof AuthenticatedNastroykaChargeTypesRoute
+  '/_authenticated/nastroyka/contragents': typeof AuthenticatedNastroykaContragentsRoute
+  '/_authenticated/nastroyka/dealers': typeof AuthenticatedNastroykaDealersRoute
+  '/_authenticated/nastroyka/employees': typeof AuthenticatedNastroykaEmployeesRoute
+  '/_authenticated/nastroyka/exchange-rates': typeof AuthenticatedNastroykaExchangeRatesRoute
+  '/_authenticated/nastroyka/products': typeof AuthenticatedNastroykaProductsRoute
+  '/_authenticated/nastroyka/sources': typeof AuthenticatedNastroykaSourcesRoute
+  '/_authenticated/nastroyka/unit-types': typeof AuthenticatedNastroykaUnitTypesRoute
+  '/_authenticated/nastroyka/': typeof AuthenticatedNastroykaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/operatsiyalar'
+    | '/nastroyka/accounts'
+    | '/nastroyka/charge-types'
+    | '/nastroyka/contragents'
+    | '/nastroyka/dealers'
+    | '/nastroyka/employees'
+    | '/nastroyka/exchange-rates'
+    | '/nastroyka/products'
+    | '/nastroyka/sources'
+    | '/nastroyka/unit-types'
+    | '/nastroyka/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/operatsiyalar'
+    | '/nastroyka/accounts'
+    | '/nastroyka/charge-types'
+    | '/nastroyka/contragents'
+    | '/nastroyka/dealers'
+    | '/nastroyka/employees'
+    | '/nastroyka/exchange-rates'
+    | '/nastroyka/products'
+    | '/nastroyka/sources'
+    | '/nastroyka/unit-types'
+    | '/nastroyka'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/operatsiyalar'
+    | '/_authenticated/nastroyka/accounts'
+    | '/_authenticated/nastroyka/charge-types'
+    | '/_authenticated/nastroyka/contragents'
+    | '/_authenticated/nastroyka/dealers'
+    | '/_authenticated/nastroyka/employees'
+    | '/_authenticated/nastroyka/exchange-rates'
+    | '/_authenticated/nastroyka/products'
+    | '/_authenticated/nastroyka/sources'
+    | '/_authenticated/nastroyka/unit-types'
+    | '/_authenticated/nastroyka/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +242,134 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/operatsiyalar': {
+      id: '/_authenticated/operatsiyalar'
+      path: '/operatsiyalar'
+      fullPath: '/operatsiyalar'
+      preLoaderRoute: typeof AuthenticatedOperatsiyalarRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nastroyka/': {
+      id: '/_authenticated/nastroyka/'
+      path: '/nastroyka'
+      fullPath: '/nastroyka/'
+      preLoaderRoute: typeof AuthenticatedNastroykaIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nastroyka/unit-types': {
+      id: '/_authenticated/nastroyka/unit-types'
+      path: '/nastroyka/unit-types'
+      fullPath: '/nastroyka/unit-types'
+      preLoaderRoute: typeof AuthenticatedNastroykaUnitTypesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nastroyka/sources': {
+      id: '/_authenticated/nastroyka/sources'
+      path: '/nastroyka/sources'
+      fullPath: '/nastroyka/sources'
+      preLoaderRoute: typeof AuthenticatedNastroykaSourcesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nastroyka/products': {
+      id: '/_authenticated/nastroyka/products'
+      path: '/nastroyka/products'
+      fullPath: '/nastroyka/products'
+      preLoaderRoute: typeof AuthenticatedNastroykaProductsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nastroyka/exchange-rates': {
+      id: '/_authenticated/nastroyka/exchange-rates'
+      path: '/nastroyka/exchange-rates'
+      fullPath: '/nastroyka/exchange-rates'
+      preLoaderRoute: typeof AuthenticatedNastroykaExchangeRatesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nastroyka/employees': {
+      id: '/_authenticated/nastroyka/employees'
+      path: '/nastroyka/employees'
+      fullPath: '/nastroyka/employees'
+      preLoaderRoute: typeof AuthenticatedNastroykaEmployeesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nastroyka/dealers': {
+      id: '/_authenticated/nastroyka/dealers'
+      path: '/nastroyka/dealers'
+      fullPath: '/nastroyka/dealers'
+      preLoaderRoute: typeof AuthenticatedNastroykaDealersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nastroyka/contragents': {
+      id: '/_authenticated/nastroyka/contragents'
+      path: '/nastroyka/contragents'
+      fullPath: '/nastroyka/contragents'
+      preLoaderRoute: typeof AuthenticatedNastroykaContragentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nastroyka/charge-types': {
+      id: '/_authenticated/nastroyka/charge-types'
+      path: '/nastroyka/charge-types'
+      fullPath: '/nastroyka/charge-types'
+      preLoaderRoute: typeof AuthenticatedNastroykaChargeTypesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nastroyka/accounts': {
+      id: '/_authenticated/nastroyka/accounts'
+      path: '/nastroyka/accounts'
+      fullPath: '/nastroyka/accounts'
+      preLoaderRoute: typeof AuthenticatedNastroykaAccountsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedOperatsiyalarRoute: typeof AuthenticatedOperatsiyalarRoute
+  AuthenticatedNastroykaAccountsRoute: typeof AuthenticatedNastroykaAccountsRoute
+  AuthenticatedNastroykaChargeTypesRoute: typeof AuthenticatedNastroykaChargeTypesRoute
+  AuthenticatedNastroykaContragentsRoute: typeof AuthenticatedNastroykaContragentsRoute
+  AuthenticatedNastroykaDealersRoute: typeof AuthenticatedNastroykaDealersRoute
+  AuthenticatedNastroykaEmployeesRoute: typeof AuthenticatedNastroykaEmployeesRoute
+  AuthenticatedNastroykaExchangeRatesRoute: typeof AuthenticatedNastroykaExchangeRatesRoute
+  AuthenticatedNastroykaProductsRoute: typeof AuthenticatedNastroykaProductsRoute
+  AuthenticatedNastroykaSourcesRoute: typeof AuthenticatedNastroykaSourcesRoute
+  AuthenticatedNastroykaUnitTypesRoute: typeof AuthenticatedNastroykaUnitTypesRoute
+  AuthenticatedNastroykaIndexRoute: typeof AuthenticatedNastroykaIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedOperatsiyalarRoute: AuthenticatedOperatsiyalarRoute,
+  AuthenticatedNastroykaAccountsRoute: AuthenticatedNastroykaAccountsRoute,
+  AuthenticatedNastroykaChargeTypesRoute:
+    AuthenticatedNastroykaChargeTypesRoute,
+  AuthenticatedNastroykaContragentsRoute:
+    AuthenticatedNastroykaContragentsRoute,
+  AuthenticatedNastroykaDealersRoute: AuthenticatedNastroykaDealersRoute,
+  AuthenticatedNastroykaEmployeesRoute: AuthenticatedNastroykaEmployeesRoute,
+  AuthenticatedNastroykaExchangeRatesRoute:
+    AuthenticatedNastroykaExchangeRatesRoute,
+  AuthenticatedNastroykaProductsRoute: AuthenticatedNastroykaProductsRoute,
+  AuthenticatedNastroykaSourcesRoute: AuthenticatedNastroykaSourcesRoute,
+  AuthenticatedNastroykaUnitTypesRoute: AuthenticatedNastroykaUnitTypesRoute,
+  AuthenticatedNastroykaIndexRoute: AuthenticatedNastroykaIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
