@@ -80,7 +80,7 @@ function OperatsiyalarPage() {
       if (filters.from) q = q.gte("operation_date", filters.from);
       if (filters.to) q = q.lte("operation_date", filters.to);
       if (filters.account !== "all") q = q.eq("account_id", filters.account);
-      if (filters.type !== "all") q = q.eq("operation_type", filters.type);
+      if (filters.type !== "all") q = q.eq("operation_type", filters.type as "income" | "expense");
       const { data, error } = await q.limit(500);
       if (error) throw error;
       return (data ?? []) as TxRow[];
@@ -236,7 +236,7 @@ function OperatsiyalarPage() {
         </CardContent>
       </Card>
 
-      <TransactionForm open={open} onOpenChange={setOpen} operationType={opType} editing={editing} />
+      <TransactionForm open={open} onOpenChange={setOpen} operationType={opType} editing={editing as unknown as Record<string, unknown> | null} />
     </>
   );
 }
