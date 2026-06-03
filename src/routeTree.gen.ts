@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedOperatsiyalarRouteImport } from './routes/_authenticated/operatsiyalar'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedNastroykaIndexRouteImport } from './routes/_authenticated/nastroyka/index'
 import { Route as AuthenticatedNastroykaUnitTypesRouteImport } from './routes/_authenticated/nastroyka/unit-types'
 import { Route as AuthenticatedNastroykaSourcesRouteImport } from './routes/_authenticated/nastroyka/sources'
 import { Route as AuthenticatedNastroykaProductsRouteImport } from './routes/_authenticated/nastroyka/products'
@@ -36,6 +39,23 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedOperatsiyalarRoute =
+  AuthenticatedOperatsiyalarRouteImport.update({
+    id: '/operatsiyalar',
+    path: '/operatsiyalar',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedNastroykaIndexRoute =
+  AuthenticatedNastroykaIndexRouteImport.update({
+    id: '/nastroyka/',
+    path: '/nastroyka/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedNastroykaUnitTypesRoute =
   AuthenticatedNastroykaUnitTypesRouteImport.update({
     id: '/nastroyka/unit-types',
@@ -94,6 +114,8 @@ const AuthenticatedNastroykaAccountsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/operatsiyalar': typeof AuthenticatedOperatsiyalarRoute
   '/nastroyka/accounts': typeof AuthenticatedNastroykaAccountsRoute
   '/nastroyka/charge-types': typeof AuthenticatedNastroykaChargeTypesRoute
   '/nastroyka/contragents': typeof AuthenticatedNastroykaContragentsRoute
@@ -103,10 +125,13 @@ export interface FileRoutesByFullPath {
   '/nastroyka/products': typeof AuthenticatedNastroykaProductsRoute
   '/nastroyka/sources': typeof AuthenticatedNastroykaSourcesRoute
   '/nastroyka/unit-types': typeof AuthenticatedNastroykaUnitTypesRoute
+  '/nastroyka/': typeof AuthenticatedNastroykaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/operatsiyalar': typeof AuthenticatedOperatsiyalarRoute
   '/nastroyka/accounts': typeof AuthenticatedNastroykaAccountsRoute
   '/nastroyka/charge-types': typeof AuthenticatedNastroykaChargeTypesRoute
   '/nastroyka/contragents': typeof AuthenticatedNastroykaContragentsRoute
@@ -116,12 +141,15 @@ export interface FileRoutesByTo {
   '/nastroyka/products': typeof AuthenticatedNastroykaProductsRoute
   '/nastroyka/sources': typeof AuthenticatedNastroykaSourcesRoute
   '/nastroyka/unit-types': typeof AuthenticatedNastroykaUnitTypesRoute
+  '/nastroyka': typeof AuthenticatedNastroykaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/operatsiyalar': typeof AuthenticatedOperatsiyalarRoute
   '/_authenticated/nastroyka/accounts': typeof AuthenticatedNastroykaAccountsRoute
   '/_authenticated/nastroyka/charge-types': typeof AuthenticatedNastroykaChargeTypesRoute
   '/_authenticated/nastroyka/contragents': typeof AuthenticatedNastroykaContragentsRoute
@@ -131,12 +159,15 @@ export interface FileRoutesById {
   '/_authenticated/nastroyka/products': typeof AuthenticatedNastroykaProductsRoute
   '/_authenticated/nastroyka/sources': typeof AuthenticatedNastroykaSourcesRoute
   '/_authenticated/nastroyka/unit-types': typeof AuthenticatedNastroykaUnitTypesRoute
+  '/_authenticated/nastroyka/': typeof AuthenticatedNastroykaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
+    | '/dashboard'
+    | '/operatsiyalar'
     | '/nastroyka/accounts'
     | '/nastroyka/charge-types'
     | '/nastroyka/contragents'
@@ -146,10 +177,13 @@ export interface FileRouteTypes {
     | '/nastroyka/products'
     | '/nastroyka/sources'
     | '/nastroyka/unit-types'
+    | '/nastroyka/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
+    | '/dashboard'
+    | '/operatsiyalar'
     | '/nastroyka/accounts'
     | '/nastroyka/charge-types'
     | '/nastroyka/contragents'
@@ -159,11 +193,14 @@ export interface FileRouteTypes {
     | '/nastroyka/products'
     | '/nastroyka/sources'
     | '/nastroyka/unit-types'
+    | '/nastroyka'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/operatsiyalar'
     | '/_authenticated/nastroyka/accounts'
     | '/_authenticated/nastroyka/charge-types'
     | '/_authenticated/nastroyka/contragents'
@@ -173,6 +210,7 @@ export interface FileRouteTypes {
     | '/_authenticated/nastroyka/products'
     | '/_authenticated/nastroyka/sources'
     | '/_authenticated/nastroyka/unit-types'
+    | '/_authenticated/nastroyka/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -203,6 +241,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/operatsiyalar': {
+      id: '/_authenticated/operatsiyalar'
+      path: '/operatsiyalar'
+      fullPath: '/operatsiyalar'
+      preLoaderRoute: typeof AuthenticatedOperatsiyalarRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/nastroyka/': {
+      id: '/_authenticated/nastroyka/'
+      path: '/nastroyka'
+      fullPath: '/nastroyka/'
+      preLoaderRoute: typeof AuthenticatedNastroykaIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/nastroyka/unit-types': {
       id: '/_authenticated/nastroyka/unit-types'
@@ -271,6 +330,8 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedOperatsiyalarRoute: typeof AuthenticatedOperatsiyalarRoute
   AuthenticatedNastroykaAccountsRoute: typeof AuthenticatedNastroykaAccountsRoute
   AuthenticatedNastroykaChargeTypesRoute: typeof AuthenticatedNastroykaChargeTypesRoute
   AuthenticatedNastroykaContragentsRoute: typeof AuthenticatedNastroykaContragentsRoute
@@ -280,9 +341,12 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedNastroykaProductsRoute: typeof AuthenticatedNastroykaProductsRoute
   AuthenticatedNastroykaSourcesRoute: typeof AuthenticatedNastroykaSourcesRoute
   AuthenticatedNastroykaUnitTypesRoute: typeof AuthenticatedNastroykaUnitTypesRoute
+  AuthenticatedNastroykaIndexRoute: typeof AuthenticatedNastroykaIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedOperatsiyalarRoute: AuthenticatedOperatsiyalarRoute,
   AuthenticatedNastroykaAccountsRoute: AuthenticatedNastroykaAccountsRoute,
   AuthenticatedNastroykaChargeTypesRoute:
     AuthenticatedNastroykaChargeTypesRoute,
@@ -295,6 +359,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedNastroykaProductsRoute: AuthenticatedNastroykaProductsRoute,
   AuthenticatedNastroykaSourcesRoute: AuthenticatedNastroykaSourcesRoute,
   AuthenticatedNastroykaUnitTypesRoute: AuthenticatedNastroykaUnitTypesRoute,
+  AuthenticatedNastroykaIndexRoute: AuthenticatedNastroykaIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
