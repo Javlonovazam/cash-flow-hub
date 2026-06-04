@@ -313,6 +313,7 @@ export type Database = {
           source_id: string | null
           updated_at: string
           usd_rate: number | null
+          zayavka_number: string | null
         }
         Insert: {
           account_id: string
@@ -331,6 +332,7 @@ export type Database = {
           source_id?: string | null
           updated_at?: string
           usd_rate?: number | null
+          zayavka_number?: string | null
         }
         Update: {
           account_id?: string
@@ -349,6 +351,7 @@ export type Database = {
           source_id?: string | null
           updated_at?: string
           usd_rate?: number | null
+          zayavka_number?: string | null
         }
         Relationships: [
           {
