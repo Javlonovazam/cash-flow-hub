@@ -24,6 +24,7 @@ interface TxRow {
   operation_type: "income" | "expense";
   operation_date: string;
   amount: number;
+  zayavka_number: string | null;
   usd_rate: number | null;
   amount_uzs: number | null;
   account_id: string;
@@ -35,6 +36,7 @@ interface TxRow {
   note: string | null;
   created_at: string;
 }
+
 
 function OperatsiyalarPage() {
   const qc = useQueryClient();
@@ -92,11 +94,13 @@ function OperatsiyalarPage() {
     const s = filters.search.toLowerCase();
     return txs.filter((t) =>
       (t.note ?? "").toLowerCase().includes(s) ||
+      (t.zayavka_number ?? "").toLowerCase().includes(s) ||
       (lookup.contragent[t.contragent_id ?? ""] ?? "").toLowerCase().includes(s) ||
       (lookup.source[t.source_id ?? ""] ?? "").toLowerCase().includes(s) ||
       (lookup.employee[t.employee_id ?? ""] ?? "").toLowerCase().includes(s)
     );
   }, [txs, filters.search, lookup]);
+
 
   const del = useMutation({
     mutationFn: async (id: string) => {
@@ -110,24 +114,39 @@ function OperatsiyalarPage() {
   const openCreate = (t: "income" | "expense") => { setEditing(null); setOpType(t); setOpen(true); };
   const openEdit = (row: TxRow) => { setEditing(row); setOpType(row.operation_type); setOpen(true); };
 
-  const exportCsv = () => {
-    const rows = [
-      ["ID", "Sana", "Tur", "Hisob", "Summa", "Kurs", "Kontragent", "Manba", "Xodim", "Nachisleniya", "Oy", "Izoh", "Yaratilgan"],
-      ...filtered.map((t) => [
-        t.id, t.operation_date, t.operation_type === "income" ? "Kirim" : "Chiqim",
-        lookup.account[t.account_id]?.name ?? "", t.amount, t.usd_rate ?? "",
-        lookup.contragent[t.contragent_id ?? ""] ?? "", lookup.source[t.source_id ?? ""] ?? "",
-        lookup.employee[t.employee_id ?? ""] ?? "", lookup.charge[t.charge_type_id ?? ""] ?? "",
-        t.charge_month ?? "", (t.note ?? "").replace(/\n/g, " "), t.created_at,
-      ]),
+  const exportXlsx = async () => {
+    const XLSX = await import("xlsx");
+    const data = filtered.map((t) => {
+      const acc = lookup.account[t.account_id];
+      return {
+        "Sana": t.operation_date,
+        "Tur": t.operation_type === "income" ? "Kirim" : "Chiqim",
+        "Hisob raqami": acc?.name ?? "",
+        "Valyuta": acc?.currency ?? "",
+        "Summa": Number(t.amount),
+        "Zayavka raqami": t.zayavka_number ?? "",
+        "USD kursi": t.usd_rate ?? "",
+        "Summa (UZS)": t.amount_uzs ?? "",
+        "Kontragent": lookup.contragent[t.contragent_id ?? ""] ?? "",
+        "Manba": lookup.source[t.source_id ?? ""] ?? "",
+        "Xodim": lookup.employee[t.employee_id ?? ""] ?? "",
+        "Nachisleniya": lookup.charge[t.charge_type_id ?? ""] ?? "",
+        "Oy uchun": t.charge_month ?? "",
+        "Izoh": (t.note ?? "").replace(/\n/g, " "),
+        "Yaratilgan": t.created_at,
+      };
+    });
+    const ws = XLSX.utils.json_to_sheet(data);
+    ws["!cols"] = [
+      { wch: 12 }, { wch: 8 }, { wch: 18 }, { wch: 8 }, { wch: 14 },
+      { wch: 16 }, { wch: 10 }, { wch: 16 }, { wch: 22 }, { wch: 18 },
+      { wch: 20 }, { wch: 18 }, { wch: 12 }, { wch: 30 }, { wch: 20 },
     ];
-    const csv = rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
-    const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = `operatsiyalar_${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click(); URL.revokeObjectURL(url);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Operatsiyalar");
+    XLSX.writeFile(wb, `Novza_eshiklari_2016_operatsiyalar_${new Date().toISOString().slice(0, 10)}.xlsx`);
   };
+
 
   return (
     <>
@@ -136,7 +155,8 @@ function OperatsiyalarPage() {
         <div className="flex gap-2">
           <Button onClick={() => openCreate("income")} className="gap-1"><Plus className="size-4" /> Kirim</Button>
           <Button onClick={() => openCreate("expense")} variant="secondary" className="gap-1"><Minus className="size-4" /> Chiqim</Button>
-          <Button onClick={exportCsv} variant="outline" className="gap-1"><Download className="size-4" /> Excel</Button>
+          <Button onClick={exportXlsx} variant="outline" className="gap-1"><Download className="size-4" /> Excel</Button>
+
         </div>
       </div>
 
@@ -171,7 +191,8 @@ function OperatsiyalarPage() {
               <label className="text-xs text-muted-foreground">Qidiruv</label>
               <div className="relative">
                 <Search className="size-4 absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <Input className="pl-8" placeholder="Izoh, kontragent..." value={filters.search} onChange={(e) => setFilters({ ...filters, search: e.target.value })} />
+                <Input className="pl-8" placeholder="Izoh, zayavka, kontragent..." value={filters.search} onChange={(e) => setFilters({ ...filters, search: e.target.value })} />
+
               </div>
             </div>
           </div>
@@ -188,6 +209,7 @@ function OperatsiyalarPage() {
                   <TableHead>Tur</TableHead>
                   <TableHead>Hisob</TableHead>
                   <TableHead className="text-right">Summa</TableHead>
+                  <TableHead>Zayavka</TableHead>
                   <TableHead>Kontragent</TableHead>
                   <TableHead>Manba</TableHead>
                   <TableHead>Xodim</TableHead>
@@ -196,12 +218,14 @@ function OperatsiyalarPage() {
                   <TableHead>Yaratilgan</TableHead>
                   <TableHead className="text-right">Amallar</TableHead>
                 </TableRow>
+
               </TableHeader>
               <TableBody>
                 {isLoading ? (
-                  <TableRow><TableCell colSpan={11} className="text-center py-8 text-muted-foreground">Yuklanmoqda...</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={12} className="text-center py-8 text-muted-foreground">Yuklanmoqda...</TableCell></TableRow>
                 ) : filtered.length === 0 ? (
-                  <TableRow><TableCell colSpan={11} className="text-center py-8 text-muted-foreground">Ma'lumot yo'q</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={12} className="text-center py-8 text-muted-foreground">Ma'lumot yo'q</TableCell></TableRow>
+
                 ) : filtered.map((t) => {
                   const acc = lookup.account[t.account_id];
                   return (
@@ -217,7 +241,9 @@ function OperatsiyalarPage() {
                         {t.operation_type === "income" ? "+" : "−"} {fmtMoney(t.amount, acc?.currency ?? "UZS")}
                         {t.usd_rate && <div className="text-xs text-muted-foreground font-normal">kurs: {t.usd_rate}</div>}
                       </TableCell>
+                      <TableCell className="text-sm font-mono">{t.zayavka_number ?? "—"}</TableCell>
                       <TableCell className="text-sm">{lookup.contragent[t.contragent_id ?? ""] ?? "—"}</TableCell>
+
                       <TableCell className="text-sm">{lookup.source[t.source_id ?? ""] ?? "—"}</TableCell>
                       <TableCell className="text-sm">{lookup.employee[t.employee_id ?? ""] ?? "—"}</TableCell>
                       <TableCell className="text-sm">{lookup.charge[t.charge_type_id ?? ""] ?? "—"}</TableCell>
