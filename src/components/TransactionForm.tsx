@@ -44,6 +44,7 @@ export function TransactionForm({ open, onOpenChange, operationType, editing }: 
   const [form, setForm] = useState({
     operation_date: todayISO(),
     amount: "" as string | number,
+    zayavka_number: "",
     account_id: "",
     usd_rate: "" as string | number,
     contragent_id: "",
@@ -54,11 +55,13 @@ export function TransactionForm({ open, onOpenChange, operationType, editing }: 
     note: "",
   });
 
+
   useEffect(() => {
     if (editing) {
       setForm({
         operation_date: (editing.operation_date as string) ?? todayISO(),
         amount: (editing.amount as number) ?? "",
+        zayavka_number: (editing.zayavka_number as string) ?? "",
         account_id: (editing.account_id as string) ?? "",
         usd_rate: (editing.usd_rate as number) ?? "",
         contragent_id: (editing.contragent_id as string) ?? "",
@@ -70,11 +73,12 @@ export function TransactionForm({ open, onOpenChange, operationType, editing }: 
       });
     } else {
       setForm({
-        operation_date: todayISO(), amount: "", account_id: "", usd_rate: "",
+        operation_date: todayISO(), amount: "", zayavka_number: "", account_id: "", usd_rate: "",
         contragent_id: "", source_id: "", employee_id: "", charge_type_id: "", charge_month: "", note: "",
       });
     }
   }, [editing, open]);
+
 
   const selectedAccount = accounts.find((a) => a.id === form.account_id);
   const isUsd = selectedAccount?.currency === "USD";
@@ -95,6 +99,7 @@ export function TransactionForm({ open, onOpenChange, operationType, editing }: 
         operation_type: operationType,
         operation_date: form.operation_date,
         amount: amountNum,
+        zayavka_number: form.zayavka_number || null,
         account_id: form.account_id,
         usd_rate: isUsd ? rateNum : null,
         amount_uzs: isUsd ? amountUzs : amountNum,
@@ -106,6 +111,7 @@ export function TransactionForm({ open, onOpenChange, operationType, editing }: 
         note: form.note || null,
         created_by: userRes.user?.id ?? null,
       };
+
       if (editing?.id) {
         const { error } = await supabase.from("transactions").update(payload).eq("id", editing.id as string);
         if (error) throw error;
@@ -138,6 +144,11 @@ export function TransactionForm({ open, onOpenChange, operationType, editing }: 
             <Label>Summa *</Label>
             <Input type="number" step="any" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} />
           </div>
+          <div>
+            <Label>Zayavka raqami</Label>
+            <Input value={form.zayavka_number} onChange={(e) => setForm({ ...form, zayavka_number: e.target.value })} placeholder="Masalan: Z-2026-001" />
+          </div>
+
           <div>
             <Label>Hisob raqami *</Label>
             <Select value={form.account_id} onValueChange={(v) => setForm({ ...form, account_id: v })}>

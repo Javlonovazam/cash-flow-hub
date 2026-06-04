@@ -1,7 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   LayoutDashboard,
-  Wallet,
   Receipt,
   Settings,
   LogOut,
@@ -14,6 +14,8 @@ import {
   ArrowLeftRight,
   Coins,
   DollarSign,
+  Wallet,
+  ChevronRight,
 } from "lucide-react";
 import {
   Sidebar,
@@ -21,11 +23,13 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -35,7 +39,7 @@ const main = [
   { title: "Kassa operatsiyalari", url: "/operatsiyalar", icon: Receipt },
 ];
 
-const settings = [
+const nastroyka = [
   { title: "Hisob raqamlar", url: "/nastroyka/accounts", icon: Wallet },
   { title: "Manbalar", url: "/nastroyka/sources", icon: ArrowLeftRight },
   { title: "Nachisleniya", url: "/nastroyka/charge-types", icon: Coins },
@@ -50,16 +54,18 @@ const settings = [
 export function AppSidebar() {
   const pathname = useRouterState({ select: (r) => r.location.pathname });
   const isActive = (url: string) => pathname === url || pathname.startsWith(url + "/");
+  const nastroykaActive = pathname.startsWith("/nastroyka");
+  const [openNastroyka, setOpenNastroyka] = useState(nastroykaActive);
 
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="px-3 py-4 border-b">
         <div className="flex items-center gap-2">
           <div className="size-8 rounded-lg bg-primary text-primary-foreground grid place-items-center font-bold">
-            E
+            N
           </div>
           <div className="group-data-[collapsible=icon]:hidden">
-            <div className="font-semibold tracking-tight text-sm">Lovable ERP</div>
+            <div className="font-semibold tracking-tight text-sm">Novza eshiklari 2016</div>
             <div className="text-xs text-muted-foreground">Kassa boshqaruvi</div>
           </div>
         </div>
@@ -67,7 +73,6 @@ export function AppSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Asosiy</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {main.map((item) => (
@@ -80,26 +85,34 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
 
-        <SidebarGroup>
-          <SidebarGroupLabel className="flex items-center gap-2">
-            <Settings className="size-3.5" /> Nastroyka
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {settings.map((item) => (
-                <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
-                    <Link to={item.url}>
-                      <item.icon className="size-4" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  onClick={() => setOpenNastroyka((v) => !v)}
+                  isActive={nastroykaActive}
+                  tooltip="Nastroyka"
+                >
+                  <Settings className="size-4" />
+                  <span>Nastroyka</span>
+                  <ChevronRight
+                    className={`ml-auto size-4 transition-transform ${openNastroyka ? "rotate-90" : ""}`}
+                  />
+                </SidebarMenuButton>
+                {openNastroyka && (
+                  <SidebarMenuSub>
+                    {nastroyka.map((item) => (
+                      <SidebarMenuSubItem key={item.url}>
+                        <SidebarMenuSubButton asChild isActive={isActive(item.url)}>
+                          <Link to={item.url}>
+                            <item.icon className="size-4" />
+                            <span>{item.title}</span>
+                          </Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    ))}
+                  </SidebarMenuSub>
+                )}
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
