@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   LayoutDashboard,
@@ -10,7 +10,7 @@ import {
   UserCircle,
   Package,
   Ruler,
-  Tag,
+  ShieldCheck,
   ArrowLeftRight,
   Coins,
   DollarSign,
@@ -31,31 +31,43 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { useAccess } from "@/hooks/use-access";
+import { canAccess } from "@/lib/access";
 
 const main = [
-  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Kassa operatsiyalari", url: "/operatsiyalar", icon: Receipt },
+  { key: "dashboard", title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+  { key: "operatsiyalar", title: "Kassa operatsiyalari", url: "/operatsiyalar", icon: Receipt },
 ];
 
 const nastroyka = [
-  { title: "Hisob raqamlar", url: "/nastroyka/accounts", icon: Wallet },
-  { title: "Manbalar", url: "/nastroyka/sources", icon: ArrowLeftRight },
-  { title: "Nachisleniya", url: "/nastroyka/charge-types", icon: Coins },
-  { title: "Valyuta kursi", url: "/nastroyka/exchange-rates", icon: DollarSign },
-  { title: "Kontragentlar", url: "/nastroyka/contragents", icon: Building2 },
-  { title: "Xodimlar", url: "/nastroyka/employees", icon: Users },
-  { title: "Dilerlar", url: "/nastroyka/dealers", icon: UserCircle },
-  { title: "Mahsulotlar", url: "/nastroyka/products", icon: Package },
-  { title: "Hajm turlari", url: "/nastroyka/unit-types", icon: Ruler },
+  { key: "nastroyka.accounts", title: "Hisob raqamlar", url: "/nastroyka/accounts", icon: Wallet },
+  { key: "nastroyka.sources", title: "Manbalar", url: "/nastroyka/sources", icon: ArrowLeftRight },
+  { key: "nastroyka.charge_types", title: "Nachisleniya", url: "/nastroyka/charge-types", icon: Coins },
+  { key: "nastroyka.exchange_rates", title: "Valyuta kursi", url: "/nastroyka/exchange-rates", icon: DollarSign },
+  { key: "nastroyka.contragents", title: "Kontragentlar", url: "/nastroyka/contragents", icon: Building2 },
+  { key: "nastroyka.employees", title: "Xodimlar", url: "/nastroyka/employees", icon: Users },
+  { key: "nastroyka.dealers", title: "Dilerlar", url: "/nastroyka/dealers", icon: UserCircle },
+  { key: "nastroyka.products", title: "Mahsulotlar", url: "/nastroyka/products", icon: Package },
+  { key: "nastroyka.unit_types", title: "Hajm turlari", url: "/nastroyka/unit-types", icon: Ruler },
+  { key: "nastroyka.access_roles", title: "Ruxsatlar", url: "/nastroyka/access-roles", icon: ShieldCheck },
 ];
 
 export function AppSidebar() {
   const pathname = useRouterState({ select: (r) => r.location.pathname });
+  const navigate = useNavigate();
+  const { role, setRole } = useAccess();
   const isActive = (url: string) => pathname === url || pathname.startsWith(url + "/");
   const nastroykaActive = pathname.startsWith("/nastroyka");
   const [openNastroyka, setOpenNastroyka] = useState(nastroykaActive);
+
+  const visibleMain = main.filter((m) => canAccess(role, m.key));
+  const visibleNastroyka = nastroyka.filter((m) => canAccess(role, m.key));
+
+  const onLogout = () => {
+    setRole(null);
+    navigate({ to: "/auth", replace: true });
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -66,7 +78,7 @@ export function AppSidebar() {
           </div>
           <div className="group-data-[collapsible=icon]:hidden">
             <div className="font-semibold tracking-tight text-sm">Novza eshiklari 2016</div>
-            <div className="text-xs text-muted-foreground">Kassa boshqaruvi</div>
+            <div className="text-xs text-muted-foreground">{role?.name ?? "—"}</div>
           </div>
         </div>
       </SidebarHeader>
@@ -75,7 +87,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {main.map((item) => (
+              {visibleMain.map((item) => (
                 <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
                     <Link to={item.url}>
@@ -86,33 +98,35 @@ export function AppSidebar() {
                 </SidebarMenuItem>
               ))}
 
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  onClick={() => setOpenNastroyka((v) => !v)}
-                  isActive={nastroykaActive}
-                  tooltip="Nastroyka"
-                >
-                  <Settings className="size-4" />
-                  <span>Nastroyka</span>
-                  <ChevronRight
-                    className={`ml-auto size-4 transition-transform ${openNastroyka ? "rotate-90" : ""}`}
-                  />
-                </SidebarMenuButton>
-                {openNastroyka && (
-                  <SidebarMenuSub>
-                    {nastroyka.map((item) => (
-                      <SidebarMenuSubItem key={item.url}>
-                        <SidebarMenuSubButton asChild isActive={isActive(item.url)}>
-                          <Link to={item.url}>
-                            <item.icon className="size-4" />
-                            <span>{item.title}</span>
-                          </Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    ))}
-                  </SidebarMenuSub>
-                )}
-              </SidebarMenuItem>
+              {visibleNastroyka.length > 0 && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    onClick={() => setOpenNastroyka((v) => !v)}
+                    isActive={nastroykaActive}
+                    tooltip="Nastroyka"
+                  >
+                    <Settings className="size-4" />
+                    <span>Nastroyka</span>
+                    <ChevronRight
+                      className={`ml-auto size-4 transition-transform ${openNastroyka ? "rotate-90" : ""}`}
+                    />
+                  </SidebarMenuButton>
+                  {openNastroyka && (
+                    <SidebarMenuSub>
+                      {visibleNastroyka.map((item) => (
+                        <SidebarMenuSubItem key={item.url}>
+                          <SidebarMenuSubButton asChild isActive={isActive(item.url)}>
+                            <Link to={item.url}>
+                              <item.icon className="size-4" />
+                              <span>{item.title}</span>
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  )}
+                </SidebarMenuItem>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -123,7 +137,7 @@ export function AppSidebar() {
           variant="ghost"
           size="sm"
           className="w-full justify-start gap-2"
-          onClick={() => supabase.auth.signOut()}
+          onClick={onLogout}
         >
           <LogOut className="size-4" />
           <span className="group-data-[collapsible=icon]:hidden">Chiqish</span>
@@ -132,5 +146,3 @@ export function AppSidebar() {
     </Sidebar>
   );
 }
-
-export { Tag };
