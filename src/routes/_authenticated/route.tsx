@@ -2,15 +2,11 @@ import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
-import { AccessProvider, useAccess } from "@/hooks/use-access";
+import { useAccess } from "@/hooks/use-access";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
-  component: () => (
-    <AccessProvider>
-      <Gate />
-    </AccessProvider>
-  ),
+  component: Gate,
 });
 
 function Gate() {
