@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_roles: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          is_general: boolean
+          name: string
+          password_hash: string
+          permissions: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          is_general?: boolean
+          name: string
+          password_hash: string
+          permissions?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          is_general?: boolean
+          name?: string
+          password_hash?: string
+          permissions?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       accounts: {
         Row: {
           created_at: string
@@ -445,6 +478,19 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      set_access_role_password: {
+        Args: { p_id: string; p_password: string }
+        Returns: undefined
+      }
+      verify_access_password: {
+        Args: { p_password: string }
+        Returns: {
+          id: string
+          is_general: boolean
+          name: string
+          permissions: Json
+        }[]
       }
     }
     Enums: {

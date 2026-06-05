@@ -24,6 +24,7 @@ import { Route as AuthenticatedNastroykaDealersRouteImport } from './routes/_aut
 import { Route as AuthenticatedNastroykaContragentsRouteImport } from './routes/_authenticated/nastroyka/contragents'
 import { Route as AuthenticatedNastroykaChargeTypesRouteImport } from './routes/_authenticated/nastroyka/charge-types'
 import { Route as AuthenticatedNastroykaAccountsRouteImport } from './routes/_authenticated/nastroyka/accounts'
+import { Route as AuthenticatedNastroykaAccessRolesRouteImport } from './routes/_authenticated/nastroyka/access-roles'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -110,12 +111,19 @@ const AuthenticatedNastroykaAccountsRoute =
     path: '/nastroyka/accounts',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedNastroykaAccessRolesRoute =
+  AuthenticatedNastroykaAccessRolesRouteImport.update({
+    id: '/nastroyka/access-roles',
+    path: '/nastroyka/access-roles',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/operatsiyalar': typeof AuthenticatedOperatsiyalarRoute
+  '/nastroyka/access-roles': typeof AuthenticatedNastroykaAccessRolesRoute
   '/nastroyka/accounts': typeof AuthenticatedNastroykaAccountsRoute
   '/nastroyka/charge-types': typeof AuthenticatedNastroykaChargeTypesRoute
   '/nastroyka/contragents': typeof AuthenticatedNastroykaContragentsRoute
@@ -132,6 +140,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/operatsiyalar': typeof AuthenticatedOperatsiyalarRoute
+  '/nastroyka/access-roles': typeof AuthenticatedNastroykaAccessRolesRoute
   '/nastroyka/accounts': typeof AuthenticatedNastroykaAccountsRoute
   '/nastroyka/charge-types': typeof AuthenticatedNastroykaChargeTypesRoute
   '/nastroyka/contragents': typeof AuthenticatedNastroykaContragentsRoute
@@ -150,6 +159,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/operatsiyalar': typeof AuthenticatedOperatsiyalarRoute
+  '/_authenticated/nastroyka/access-roles': typeof AuthenticatedNastroykaAccessRolesRoute
   '/_authenticated/nastroyka/accounts': typeof AuthenticatedNastroykaAccountsRoute
   '/_authenticated/nastroyka/charge-types': typeof AuthenticatedNastroykaChargeTypesRoute
   '/_authenticated/nastroyka/contragents': typeof AuthenticatedNastroykaContragentsRoute
@@ -168,6 +178,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/operatsiyalar'
+    | '/nastroyka/access-roles'
     | '/nastroyka/accounts'
     | '/nastroyka/charge-types'
     | '/nastroyka/contragents'
@@ -184,6 +195,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/operatsiyalar'
+    | '/nastroyka/access-roles'
     | '/nastroyka/accounts'
     | '/nastroyka/charge-types'
     | '/nastroyka/contragents'
@@ -201,6 +213,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/dashboard'
     | '/_authenticated/operatsiyalar'
+    | '/_authenticated/nastroyka/access-roles'
     | '/_authenticated/nastroyka/accounts'
     | '/_authenticated/nastroyka/charge-types'
     | '/_authenticated/nastroyka/contragents'
@@ -326,12 +339,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedNastroykaAccountsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/nastroyka/access-roles': {
+      id: '/_authenticated/nastroyka/access-roles'
+      path: '/nastroyka/access-roles'
+      fullPath: '/nastroyka/access-roles'
+      preLoaderRoute: typeof AuthenticatedNastroykaAccessRolesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedOperatsiyalarRoute: typeof AuthenticatedOperatsiyalarRoute
+  AuthenticatedNastroykaAccessRolesRoute: typeof AuthenticatedNastroykaAccessRolesRoute
   AuthenticatedNastroykaAccountsRoute: typeof AuthenticatedNastroykaAccountsRoute
   AuthenticatedNastroykaChargeTypesRoute: typeof AuthenticatedNastroykaChargeTypesRoute
   AuthenticatedNastroykaContragentsRoute: typeof AuthenticatedNastroykaContragentsRoute
@@ -347,6 +368,8 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedOperatsiyalarRoute: AuthenticatedOperatsiyalarRoute,
+  AuthenticatedNastroykaAccessRolesRoute:
+    AuthenticatedNastroykaAccessRolesRoute,
   AuthenticatedNastroykaAccountsRoute: AuthenticatedNastroykaAccountsRoute,
   AuthenticatedNastroykaChargeTypesRoute:
     AuthenticatedNastroykaChargeTypesRoute,
