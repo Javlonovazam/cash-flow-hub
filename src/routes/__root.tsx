@@ -91,9 +91,11 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthSync />
-      <Outlet />
-      <Toaster richColors position="top-right" />
+      <AccessProvider>
+        <AuthSync />
+        <Outlet />
+        <Toaster richColors position="top-right" />
+      </AccessProvider>
     </QueryClientProvider>
   );
 }
