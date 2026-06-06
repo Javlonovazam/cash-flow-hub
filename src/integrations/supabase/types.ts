@@ -399,17 +399,23 @@ export type Database = {
           account_id: string
           amount: number
           amount_uzs: number | null
+          approved_by: string | null
+          branch: string | null
+          cash_flow_category: string | null
           charge_month: string | null
           charge_type_id: string | null
           contragent_id: string | null
           created_at: string
           created_by: string | null
+          created_by_name: string | null
           employee_id: string | null
           id: string
           note: string | null
           operation_date: string
+          operation_number: string | null
           operation_type: Database["public"]["Enums"]["operation_type"]
           source_id: string | null
+          status: string
           updated_at: string
           usd_rate: number | null
           zayavka_number: string | null
@@ -418,17 +424,23 @@ export type Database = {
           account_id: string
           amount: number
           amount_uzs?: number | null
+          approved_by?: string | null
+          branch?: string | null
+          cash_flow_category?: string | null
           charge_month?: string | null
           charge_type_id?: string | null
           contragent_id?: string | null
           created_at?: string
           created_by?: string | null
+          created_by_name?: string | null
           employee_id?: string | null
           id?: string
           note?: string | null
           operation_date: string
+          operation_number?: string | null
           operation_type: Database["public"]["Enums"]["operation_type"]
           source_id?: string | null
+          status?: string
           updated_at?: string
           usd_rate?: number | null
           zayavka_number?: string | null
@@ -437,17 +449,23 @@ export type Database = {
           account_id?: string
           amount?: number
           amount_uzs?: number | null
+          approved_by?: string | null
+          branch?: string | null
+          cash_flow_category?: string | null
           charge_month?: string | null
           charge_type_id?: string | null
           contragent_id?: string | null
           created_at?: string
           created_by?: string | null
+          created_by_name?: string | null
           employee_id?: string | null
           id?: string
           note?: string | null
           operation_date?: string
+          operation_number?: string | null
           operation_type?: Database["public"]["Enums"]["operation_type"]
           source_id?: string | null
+          status?: string
           updated_at?: string
           usd_rate?: number | null
           zayavka_number?: string | null
