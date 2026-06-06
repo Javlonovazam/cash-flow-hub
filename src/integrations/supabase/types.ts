@@ -107,6 +107,72 @@ export type Database = {
         }
         Relationships: []
       }
+      cash_flow_expected_payments: {
+        Row: {
+          account_id: string | null
+          amount: number
+          amount_uzs: number | null
+          approved_by: string | null
+          branch: string | null
+          category: string
+          contragent_id: string | null
+          counterparty: string | null
+          created_at: string
+          created_by_name: string | null
+          currency: Database["public"]["Enums"]["currency_code"]
+          due_date: string
+          employee_id: string | null
+          id: string
+          note: string | null
+          payment_type: string
+          status: string
+          updated_at: string
+          usd_rate: number | null
+        }
+        Insert: {
+          account_id?: string | null
+          amount: number
+          amount_uzs?: number | null
+          approved_by?: string | null
+          branch?: string | null
+          category?: string
+          contragent_id?: string | null
+          counterparty?: string | null
+          created_at?: string
+          created_by_name?: string | null
+          currency?: Database["public"]["Enums"]["currency_code"]
+          due_date: string
+          employee_id?: string | null
+          id?: string
+          note?: string | null
+          payment_type: string
+          status?: string
+          updated_at?: string
+          usd_rate?: number | null
+        }
+        Update: {
+          account_id?: string | null
+          amount?: number
+          amount_uzs?: number | null
+          approved_by?: string | null
+          branch?: string | null
+          category?: string
+          contragent_id?: string | null
+          counterparty?: string | null
+          created_at?: string
+          created_by_name?: string | null
+          currency?: Database["public"]["Enums"]["currency_code"]
+          due_date?: string
+          employee_id?: string | null
+          id?: string
+          note?: string | null
+          payment_type?: string
+          status?: string
+          updated_at?: string
+          usd_rate?: number | null
+        }
+        Relationships: []
+      }
       charge_types: {
         Row: {
           created_at: string
