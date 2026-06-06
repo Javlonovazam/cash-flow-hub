@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type { ReactElement } from "react";
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -94,7 +95,7 @@ function CashFlowPage() {
     </Tabs></>;
 }
 
-function ChartCard({ title, children }: { title: string; children: React.ReactElement }) { return <Card><CardHeader><CardTitle className="text-sm">{title}</CardTitle></CardHeader><CardContent className="h-72"><ResponsiveContainer width="100%" height="100%">{children}</ResponsiveContainer></CardContent></Card>; }
+function ChartCard({ title, children }: { title: string; children: ReactElement }) { return <Card><CardHeader><CardTitle className="text-sm">{title}</CardTitle></CardHeader><CardContent className="h-72"><ResponsiveContainer width="100%" height="100%">{children}</ResponsiveContainer></CardContent></Card>; }
 function aggregate(rows: Tx[], mode: "day" | "month" | "year") { const m = new Map<string, { period: string; kirim: number; chiqim: number; sof: number; qoldiq: number }>(); rows.forEach((r) => { const p = mode === "day" ? r.operation_date : mode === "month" ? r.operation_date.slice(0, 7) : r.operation_date.slice(0, 4); const x = m.get(p) ?? { period: p, kirim: 0, chiqim: 0, sof: 0, qoldiq: 0 }; const v = Number(r.amount_uzs ?? r.amount); if (r.operation_type === "income") x.kirim += v; else x.chiqim += v; x.sof = x.kirim - x.chiqim; x.qoldiq += r.operation_type === "income" ? v : -v; m.set(p, x); }); return Array.from(m.values()).sort((a, b) => a.period.localeCompare(b.period)); }
 function getPeriod(range: string, from: string, to: string) { const d = new Date(); const iso = (x: Date) => x.toISOString().slice(0, 10); const start = new Date(d); if (range === "today") return { from: iso(d), to: iso(d) }; if (range === "yesterday") { const y = new Date(d); y.setDate(y.getDate() - 1); return { from: iso(y), to: iso(y) }; } if (range === "week") start.setDate(d.getDate() - 7); else if (range === "quarter") start.setMonth(d.getMonth() - 3); else if (range === "year") start.setMonth(0, 1); else start.setDate(1); return range === "custom" ? { from: from || "1900-01-01", to: to || "2999-12-31" } : { from: iso(start), to: iso(d) }; }
 function labelRange(x: string) { return ({ today: "Bugun", yesterday: "Kecha", week: "Shu hafta", month: "Shu oy", quarter: "Shu chorak", year: "Shu yil", custom: "Custom" } as Record<string, string>)[x]; }
