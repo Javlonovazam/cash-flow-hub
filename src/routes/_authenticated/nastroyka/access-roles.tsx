@@ -239,7 +239,7 @@ function AccessRolesPage() {
                   <div className="col-span-2 text-center">Yozish</div>
                   <div className="col-span-2 text-center">Yo'q</div>
                 </div>
-                {(["Asosiy", "Nastroyka"] as const).map((group) => (
+                {(["Asosiy", "Cash Flow", "Nastroyka"] as const).map((group) => (
                   <div key={group}>
                     <div className="px-3 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/20">{group}</div>
                     {MODULES.filter((m) => m.group === group).map((m) => {
