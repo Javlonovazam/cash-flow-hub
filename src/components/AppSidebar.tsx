@@ -15,6 +15,7 @@ import {
   Coins,
   DollarSign,
   Wallet,
+  BadgeDollarSign,
   ChevronRight,
 } from "lucide-react";
 import {
@@ -38,6 +39,7 @@ import { canAccess } from "@/lib/access";
 const main = [
   { key: "dashboard", title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { key: "operatsiyalar", title: "Kassa operatsiyalari", url: "/operatsiyalar", icon: Receipt },
+  { key: "cash_flow", title: "Cash Flow", url: "/cash-flow", icon: BadgeDollarSign },
 ];
 
 const nastroyka = [
