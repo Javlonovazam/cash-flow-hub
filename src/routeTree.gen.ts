@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedOperatsiyalarRouteImport } from './routes/_authenticated/operatsiyalar'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCashFlowRouteImport } from './routes/_authenticated/cash-flow'
 import { Route as AuthenticatedNastroykaIndexRouteImport } from './routes/_authenticated/nastroyka/index'
 import { Route as AuthenticatedNastroykaUnitTypesRouteImport } from './routes/_authenticated/nastroyka/unit-types'
 import { Route as AuthenticatedNastroykaSourcesRouteImport } from './routes/_authenticated/nastroyka/sources'
@@ -49,6 +50,11 @@ const AuthenticatedOperatsiyalarRoute =
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCashFlowRoute = AuthenticatedCashFlowRouteImport.update({
+  id: '/cash-flow',
+  path: '/cash-flow',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedNastroykaIndexRoute =
@@ -121,6 +127,7 @@ const AuthenticatedNastroykaAccessRolesRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/cash-flow': typeof AuthenticatedCashFlowRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/operatsiyalar': typeof AuthenticatedOperatsiyalarRoute
   '/nastroyka/access-roles': typeof AuthenticatedNastroykaAccessRolesRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/cash-flow': typeof AuthenticatedCashFlowRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/operatsiyalar': typeof AuthenticatedOperatsiyalarRoute
   '/nastroyka/access-roles': typeof AuthenticatedNastroykaAccessRolesRoute
@@ -157,6 +165,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/cash-flow': typeof AuthenticatedCashFlowRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/operatsiyalar': typeof AuthenticatedOperatsiyalarRoute
   '/_authenticated/nastroyka/access-roles': typeof AuthenticatedNastroykaAccessRolesRoute
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/cash-flow'
     | '/dashboard'
     | '/operatsiyalar'
     | '/nastroyka/access-roles'
@@ -193,6 +203,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/cash-flow'
     | '/dashboard'
     | '/operatsiyalar'
     | '/nastroyka/access-roles'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/cash-flow'
     | '/_authenticated/dashboard'
     | '/_authenticated/operatsiyalar'
     | '/_authenticated/nastroyka/access-roles'
@@ -267,6 +279,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/cash-flow': {
+      id: '/_authenticated/cash-flow'
+      path: '/cash-flow'
+      fullPath: '/cash-flow'
+      preLoaderRoute: typeof AuthenticatedCashFlowRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/nastroyka/': {
@@ -350,6 +369,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCashFlowRoute: typeof AuthenticatedCashFlowRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedOperatsiyalarRoute: typeof AuthenticatedOperatsiyalarRoute
   AuthenticatedNastroykaAccessRolesRoute: typeof AuthenticatedNastroykaAccessRolesRoute
@@ -366,6 +386,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedCashFlowRoute: AuthenticatedCashFlowRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedOperatsiyalarRoute: AuthenticatedOperatsiyalarRoute,
   AuthenticatedNastroykaAccessRolesRoute:

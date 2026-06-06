@@ -10,12 +10,13 @@ export interface AccessRole {
 export interface ModuleDef {
   key: string;
   label: string;
-  group: "Asosiy" | "Nastroyka";
+  group: "Asosiy" | "Cash Flow" | "Nastroyka";
 }
 
 export const MODULES: ModuleDef[] = [
   { key: "dashboard", label: "Dashboard", group: "Asosiy" },
   { key: "operatsiyalar", label: "Kassa operatsiyalari", group: "Asosiy" },
+  { key: "cash_flow", label: "Cash Flow", group: "Cash Flow" },
   { key: "nastroyka.accounts", label: "Hisob raqamlar", group: "Nastroyka" },
   { key: "nastroyka.sources", label: "Manbalar", group: "Nastroyka" },
   { key: "nastroyka.charge_types", label: "Nachisleniya", group: "Nastroyka" },
